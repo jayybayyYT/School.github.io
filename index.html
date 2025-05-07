@@ -86,21 +86,23 @@
   /* Home Section */
   #home {
     position: relative;
-    height: 100vh; /* Make the home section full height */
+    height: 1080px; /* fixed height */
+    max-width: 1920px; /* maximum width */
+    margin: 0 auto; /* center horizontally */
     color: white;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
+    background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
   }
 
   #home::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.45);
+    background: rgba(0, 0, 0, 0.3);
     z-index: 0;
   }
 
