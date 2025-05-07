@@ -3,363 +3,406 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AVID - Single Page Embed</title>
+<title>AVID - Complete Single Page Website with Home</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;900&display=swap');
 
-  html {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #000; /* Black background */
+    color: #3399ff; /* Bright blue text */
+    line-height: 1.6;
+    padding-top: 64px; /* Fix space for fixed header */
     scroll-behavior: smooth;
   }
 
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #fff;
-    color: #111;
-    line-height: 1.7;
-    min-height: 100vh;
-    padding-top: 64px;
-  }
-
   header {
-    background: #000;
     position: fixed;
-    top: 0;
-    width: 100%;
+    top: 0; left: 0; right: 0;
     height: 64px;
+    background: #001f4d; /* Dark blue */
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 2rem;
-    color: white;
     z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    box-shadow: 0 2px 10px rgba(0,0,80,0.9);
   }
 
   header h1 {
-    font-weight: 700;
-    font-size: 1.5rem;
-    letter-spacing: 2px;
-  }
-
-  nav {
-    display: flex;
-    gap: 2rem;
+    color: #66a3ff; /* Soft blue */
+    font-weight: 900;
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
   }
 
   nav a {
-    color: white;
+    color: #cce0ff;
+    margin-left: 2rem;
     text-decoration: none;
     font-weight: 600;
-    font-size: 1rem;
-    padding-bottom: 4px;
-    border-bottom: 2px solid transparent;
-    transition: border-color 0.3s ease;
+    position: relative;
+    padding: 0.3rem 0;
+    transition: color 0.3s ease;
   }
 
-  nav a:hover,
-  nav a:focus,
-  nav a.active {
-    border-color: #1e90ff;
-    outline: none;
+  nav a.active,
+  nav a:hover {
+    color: #3399ff;
+  }
+
+  nav a.active::after,
+  nav a:hover::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    height: 2px;
+    background: #3399ff;
+    width: 100%;
+  }
+
+  nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    height: 2px;
+    background: #3399ff;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
   }
 
   section {
     max-width: 900px;
-    margin: 3.5rem auto 5rem auto;
+    margin: 3rem auto 5rem;
     padding: 0 1rem;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  section.visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   section h2 {
-    font-weight: 700;
-    font-size: 2.75rem;
+    font-size: 2.5rem;
+    font-weight: 900;
     margin-bottom: 2rem;
-    letter-spacing: 2px;
+    color: #3399ff;
     text-align: center;
-    color: #222;
+    letter-spacing: 3px;
+    text-transform: uppercase;
   }
 
-  /* Home Section */
+  /* New Home Section with bold design */
   #home {
+    height: 100vh;
     position: relative;
-    height: 1080px;
-    max-width: 1920px;
-    margin: 0 auto 4rem auto;
-    color: white;
+    background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1920&q=80') no-repeat center / cover;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+    color: #99ccff;
+    padding: 0 1rem;
   }
 
-  #home::after {
+  #home::before {
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.3);
+    background: linear-gradient(to bottom right, rgba(51, 153, 255, 0.95), rgba(0, 0, 80, 0.85));
     z-index: 0;
   }
 
   #home .content {
     position: relative;
-    z-index: 1;
     max-width: 700px;
-    padding: 0 1rem;
+    z-index: 1;
   }
 
   #home h2 {
-    font-size: 3.5rem;
-    margin-bottom: 1.5rem;
-    text-shadow: 0 4px 10px rgba(0,0,0,0.75);
-    color: #ffffff; /* Explicit white text color */
+    font-size: 4.5rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+    letter-spacing: 5px;
+    color: #66a3ff;
+    text-shadow: 0 2px 8px rgba(0,0,102,0.9);
+    animation: fadeSlideUp 1s ease forwards;
+    opacity: 0;
   }
 
   #home p {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     line-height: 1.6;
-    text-shadow: 0 3px 8px rgba(0,0,0,0.65);
+    font-weight: 300;
+    color: #cce0ff;
+    text-shadow: 0 1px 6px rgba(0,0,102,0.7);
+    animation: fadeSlideUp 1s ease 0.4s forwards;
+    opacity: 0;
   }
 
-  /* Teachers Section */
+  #home button {
+    margin-top: 2rem;
+    background-color: #3399ff;
+    border: none;
+    color: white;
+    padding: 1rem 3rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(51,153,255,0.8);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  #home button:hover {
+    background-color: #66b3ff;
+    box-shadow: 0 8px 20px rgba(102,179,255,0.9);
+  }
+
+  /* Rest of sections styling same as before */
   .teachers-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
     gap: 2.5rem;
   }
-
   .teacher-card {
-    background: #fefefe;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-    padding: 2rem 1.5rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: #001a4d;
+    border-radius: 20px;
+    box-shadow: 0 0 20px #3399ffaa;
+    padding: 2rem;
+    color: #cce0ff;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    cursor: default;
   }
-
   .teacher-card:hover {
-    transform: translateY(-7px);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    transform: translateY(-15px) scale(1.05);
+    box-shadow: 0 0 40px #66a3ffff;
   }
-
   .teacher-photo {
     width: 100%;
     height: 200px;
-    border-radius: 14px;
+    border-radius: 20px;
     object-fit: cover;
     margin-bottom: 1.5rem;
-    background: #ddd;
   }
-
   .teacher-name {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 0.8rem;
-    color: #222;
+    font-size: 1.7rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
   }
-
   .teacher-subject {
     font-weight: 600;
-    color: #666;
-    margin-bottom: 1.4rem;
+    font-style: italic;
+    color: #99bbff;
+    margin-bottom: 1rem;
   }
-
   .teacher-bio {
-    font-size: 1rem;
-    color: #444;
-    line-height: 1.5;
+    font-weight: 300;
+    font-size: 1.05rem;
+    line-height: 1.4;
   }
-
-  /* Students Section */
   .blog-list {
     display: grid;
     grid-template-columns: 1fr;
     gap: 3rem;
   }
-
   .blog-post {
-    background: #fff;
-    border-radius: 14px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    background: #001a4d;
+    border-radius: 20px;
+    box-shadow: 0 0 20px #3399ffaa;
     padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    transition: box-shadow 0.3s ease;
+    transition: box-shadow 0.4s ease, transform 0.4s ease;
+    color: #cce0ff;
   }
-
   .blog-post:hover {
-    box-shadow: 0 14px 40px rgba(0,0,0,0.12);
+    box-shadow: 0 0 40px #66a3ffff;
+    transform: translateY(-10px);
   }
-
   .post-image {
     width: 100%;
-    height: 260px;
-    border-radius: 14px;
+    height: 240px;
     object-fit: cover;
+    border-radius: 20px;
     margin-bottom: 1.5rem;
-    background: #ddd;
   }
-
   .post-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 0.8rem;
-    color: #222;
+    font-weight: 900;
+    font-size: 2rem;
+    margin-bottom: 0.25rem;
   }
-
   .post-author {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #777;
-    margin-bottom: 1.2rem;
     font-style: italic;
+    font-weight: 600;
+    color: #99bbff;
+    margin-bottom: 1rem;
   }
-
   .post-text {
-    font-size: 1.1rem;
-    color: #444;
-    line-height: 1.6;
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.5;
   }
-
-  /* Programs Section */
   .programs-list {
     display: grid;
     grid-template-columns: 1fr;
     gap: 3rem;
   }
-
   .program-card {
-    background: #fafafa;
-    border-radius: 14px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    background: #001a4d;
+    border-radius: 20px;
     padding: 2rem;
-    transition: box-shadow 0.3s ease;
+    box-shadow: 0 0 20px #3399ffaa;
+    color: #cce0ff;
+    transition: box-shadow 0.4s ease, transform 0.4s ease;
   }
-
   .program-card:hover {
-    box-shadow: 0 14px 40px rgba(0,0,0,0.12);
+    box-shadow: 0 0 40px #66a3ffff;
+    transform: translateY(-10px);
   }
-
   .program-title {
-    font-weight: 700;
-    font-size: 1.5rem;
+    font-weight: 900;
+    font-size: 1.8rem;
+    color: #66a3ff;
     margin-bottom: 1rem;
-    color: #222;
   }
-
   .program-description {
-    font-size: 1.1rem;
-    color: #444;
+    font-weight: 300;
+    font-size: 1.2rem;
     line-height: 1.6;
   }
-
-  /* Credits Section */
   #credits {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-  }
-
-  .credits-list {
-    list-style: none;
-    font-size: 1.2rem;
-    color: #333;
-    max-width: 600px;
-    margin: 0 auto;
-    padding-left: 0;
-    border-top: 2px solid #eee;
-    border-bottom: 2px solid #eee;
     padding-top: 2rem;
     padding-bottom: 2rem;
   }
-
-  .credits-list li {
-    margin-bottom: 1rem;
-    padding-left: 1rem;
-    position: relative;
+  .credits-list {
+    max-width: 600px;
+    margin: auto;
+    padding: 0;
+    list-style: none;
+    color: #99bbff;
+    font-weight: 300;
+    font-size: 1.1rem;
+    border-top: 2px solid #3399ff;
+    border-bottom: 2px solid #3399ff;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
   }
-
+  .credits-list li {
+    position: relative;
+    padding-left: 2rem;
+    margin-bottom: 1.25rem;
+  }
   .credits-list li::before {
-    content: "✔";
-    color: #1e90ff;
+    content: '✓';
     position: absolute;
     left: 0;
     top: 0;
+    font-weight: 900;
+    color: #66a3ff;
+    font-size: 1.3rem;
+    line-height: 1;
   }
-
   footer {
-    background: #111;
-    color: #aaa;
     text-align: center;
-    padding: 1.5rem 2rem;
-    font-size: 1rem;
-    font-weight: 400;
+    color: #445577;
+    padding: 2rem 1rem;
+    font-weight: 300;
+    background: linear-gradient(90deg, #000428 0%, #004e92 100%);
+    letter-spacing: 1px;
+    font-size: 0.95rem;
+    user-select: none;
   }
-
-  /* Responsive */
-  @media (max-width: 768px) {
+  @keyframes fadeSlideUp {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  #home h2 {
+    animation: fadeSlideUp 1s ease forwards;
+  }
+  #home p {
+    animation: fadeSlideUp 1s ease 0.4s forwards;
+  }
+  .fade-in {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (max-width: 900px) {
+    header {
+      padding: 1rem 1.5rem;
+    }
+    nav {
+      gap: 1rem;
+    }
     section {
-      margin: 3rem 2rem 6rem 2rem;
+      margin: 3rem 2rem 5rem 2rem;
     }
-
-    .teachers-list,
-    .blog-list,
-    .programs-list {
-      grid-template-columns: 1fr;
-      gap: 2.5rem;
-    }
-
     #home h2 {
-      font-size: 2.75rem;
+      font-size: 3rem;
     }
-
     #home p {
       font-size: 1.3rem;
     }
-
     .teacher-photo {
       height: 220px;
     }
-
     .post-image {
       height: 220px;
     }
   }
-
   @media (max-width: 480px) {
     header {
       padding: 1rem;
     }
-
     nav {
       gap: 1rem;
       flex-wrap: wrap;
     }
-
     nav a {
       font-size: 0.9rem;
+      margin-left: 1rem;
     }
-
-    section h2 {
-      font-size: 2rem;
-      margin-bottom: 1.25rem;
-    }
-
     #home h2 {
       font-size: 2rem;
     }
-
     #home p {
       font-size: 1.1rem;
+    }
+    .teacher-card, .blog-post, .program-card {
+      padding: 1.5rem 1rem;
+    }
+    .teacher-photo {
+      height: 170px;
+    }
+    .post-image {
+      height: 180px;
     }
   }
 </style>
 </head>
 <body>
+
 <header>
   <h1>AVID</h1>
   <nav id="navbar">
@@ -371,31 +414,30 @@
   </nav>
 </header>
 
-<!-- HOME -->
-<section id="home">
-  <div class="content" role="banner">
+<section id="home" aria-label="Home section">
+  <div class="content">
     <h2>Welcome to AVID</h2>
     <p>Advancement Via Individual Determination: Empowering students to achieve college readiness and success through dedication, support, and opportunity.</p>
+    <button onclick="document.getElementById('programs').scrollIntoView({behavior:'smooth'})">Explore Programs</button>
   </div>
 </section>
 
-<!-- TEACHERS -->
-<section id="teachers" tabindex="-1">
+<section id="teachers" tabindex="-1" class="fade-in" aria-label="Teachers section">
   <h2>Our Dedicated Teachers</h2>
   <div class="teachers-list">
-    <article class="teacher-card">
+    <article class="teacher-card" tabindex="0">
       <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80" alt="Ms. Emily Johnson" class="teacher-photo" />
       <h3 class="teacher-name">Ms. Emily Johnson</h3>
       <p class="teacher-subject">AVID Coordinator & Math Teacher</p>
       <p class="teacher-bio">Emily has been guiding students for over 10 years, fostering critical thinking and confidence through AVID's innovative methods.</p>
     </article>
-    <article class="teacher-card">
+    <article class="teacher-card" tabindex="0">
       <img src="https://images.unsplash.com/photo-1529655683826-aba9b3e77383?auto=format&fit=crop&w=400&q=80" alt="Mr. Carlos Rodriguez" class="teacher-photo" />
       <h3 class="teacher-name">Mr. Carlos Rodriguez</h3>
       <p class="teacher-subject">English Teacher</p>
       <p class="teacher-bio">Carlos empowers students to express themselves clearly and creatively, nurturing a love for literature and strong communication skills.</p>
     </article>
-    <article class="teacher-card">
+    <article class="teacher-card" tabindex="0">
       <img src="https://images.unsplash.com/photo-1552058544-f2b08422138a?auto=format&fit=crop&w=400&q=80" alt="Mrs. Sandra Lee" class="teacher-photo" />
       <h3 class="teacher-name">Mrs. Sandra Lee</h3>
       <p class="teacher-subject">College Prep Specialist</p>
@@ -404,23 +446,22 @@
   </div>
 </section>
 
-<!-- STUDENTS -->
-<section id="students" tabindex="-1">
+<section id="students" tabindex="-1" class="fade-in" aria-label="Student Experiences section">
   <h2>Student Experiences</h2>
   <div class="blog-list">
-    <article class="blog-post">
+    <article class="blog-post" tabindex="0">
       <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=800&q=80" alt="Student Jessica" class="post-image" />
       <h3 class="post-title">Jessica's Journey</h3>
       <p class="post-author">by Jessica M.</p>
       <p class="post-text">AVID helped me develop the skills and confidence I needed to excel in school and prepare for college. The tutors and teachers always encouraged me to push myself and stay focused on my goals.</p>
     </article>
-    <article class="blog-post">
+    <article class="blog-post" tabindex="0">
       <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80" alt="Student Mark" class="post-image" />
       <h3 class="post-title">Mark's College Prep</h3>
       <p class="post-author">by Mark L.</p>
       <p class="post-text">Thanks to AVID, I learned how to take effective notes, manage my time wisely, and tackle tough assignments. This program truly made a difference in my academic life.</p>
     </article>
-    <article class="blog-post">
+    <article class="blog-post" tabindex="0">
       <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80" alt="Student Amy" class="post-image" />
       <h3 class="post-title">Amy's Success Story</h3>
       <p class="post-author">by Amy P.</p>
@@ -429,27 +470,25 @@
   </div>
 </section>
 
-<!-- PROGRAMS -->
-<section id="programs" tabindex="-1">
+<section id="programs" tabindex="-1" class="fade-in" aria-label="Programs section">
   <h2>AVID Programs</h2>
   <div class="programs-list">
-    <article class="program-card">
+    <article class="program-card" tabindex="0">
       <h3 class="program-title">College Readiness Program</h3>
       <p class="program-description">Focuses on preparing students with study skills, critical thinking, and college application support to ensure success.</p>
     </article>
-    <article class="program-card">
+    <article class="program-card" tabindex="0">
       <h3 class="program-title">Tutor Support Program</h3>
       <p class="program-description">Provides ongoing tutoring sessions for students to receive additional academic assistance in challenging subjects.</p>
     </article>
-    <article class="program-card">
+    <article class="program-card" tabindex="0">
       <h3 class="program-title">Leadership Development</h3>
       <p class="program-description">Encourages students to develop leadership skills through workshops, projects, and community involvement.</p>
     </article>
   </div>
 </section>
 
-<!-- CREDITS -->
-<section id="credits" tabindex="-1">
+<section id="credits" tabindex="-1" class="fade-in" aria-label="Credits section">
   <h2>Credits</h2>
   <ul class="credits-list">
     <li>Website design inspired by Tesla's sleek style.</li>
@@ -464,20 +503,32 @@
 </footer>
 
 <script>
-  // Highlight current navigation link on scroll
+  // Fade in animation on scroll
+  const fadeElements = document.querySelectorAll('.fade-in');
+  window.addEventListener('scroll', () => {
+    fadeElements.forEach(el => {
+      const top = el.getBoundingClientRect().top;
+      if (top < window.innerHeight - 100) {
+        el.classList.add('visible');
+      }
+    });
+  });
+  window.dispatchEvent(new Event('scroll'));
+
+  // Highlight active navigation link on scroll
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('nav a');
 
   function activateNavLink() {
-    let scrollY = window.pageYOffset + 70; // offset for fixed header
+    let scrollY = window.pageYOffset + 70;
     sections.forEach(section => {
       const sectionTop = section.offsetTop;
       const sectionHeight = section.offsetHeight;
       const sectionId = section.getAttribute('id');
-      if(scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+      if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
         navLinks.forEach(link => {
           link.classList.remove('active');
-          if (link.getAttribute('href') === '#' + sectionId) {
+          if (link.getAttribute('href').substring(1) === sectionId) {
             link.classList.add('active');
           }
         });
@@ -488,5 +539,6 @@
   window.addEventListener('scroll', activateNavLink);
   window.addEventListener('load', activateNavLink);
 </script>
+
 </body>
 </html>
