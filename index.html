@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AVID - Single Page Embed</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff;
+    color: #111;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding-top: 64px;
+  }
+
+  header {
+    background: #000;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    color: white;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  }
+
+  header h1 {
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+  }
+
+  nav {
+    display: flex;
+    gap: 2rem;
+  }
+
+  nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s ease;
+  }
+
+  nav a:hover,
+  nav a:focus,
+  nav a.active {
+    border-color: #1e90ff;
+    outline: none;
+  }
+
+  section {
+    max-width: 900px;
+    margin: 2rem auto 4rem auto;
+    padding: 0 1rem;
+  }
+
+  section h2 {
+    font-weight: 700;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: 2px;
+    text-align: center;
+  }
+
+  /* Home Section */
+  #home {
+    position: relative;
+    height: 100vh; /* Make the home section full height */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
+  }
+
+  #home::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 0;
+  }
+
+  #home .content {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+  }
+
+  #home h2 {
+    font-size: 3rem;
+    text-shadow: 0 3px 8px rgba(0,0,0,0.7);
+    margin-bottom: 1rem;
+  }
+
+  #home p {
+    font-size: 1.3rem;
+    line-height: 1.5;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+  }
+
+  /* Teachers Section */
+  .teachers-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(280px, 1fr));
+    gap: 2rem;
+  }
+
+  .teacher-card {
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+    transition: transform 0.3s ease;
+  }
+
+  .teacher-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  }
+
+  .teacher-photo {
+    width: 100%;
+    height: 180px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    background: #ddd;
+  }
+
+  .teacher-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .teacher-subject {
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 1rem;
+  }
+
+  .teacher-bio {
+    font-size: 0.95rem;
+    color: #333;
+  }
+
+  /* Students Section */
+  .blog-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .blog-post {
+    background: #fdfdfd;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.07);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .blog-post:hover {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+
+  .post-image {
+    width: 100%;
+    height: 220px;
+    border-radius: 12px;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    background: #ddd;
+  }
+
+  .post-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #000;
+  }
+
+  .post-author {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 1rem;
+  }
+
+  .post-text {
+    font-size: 1rem;
+    color: #333;
+  }
+
+  /* Programs Section */
+  .programs-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .program-card {
+    background: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .program-card:hover {
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
+
+  .program-title {
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .program-description {
+    font-size: 1rem;
+    color: #333;
+  }
+
+  /* Credits Section */
+  .credits-list {
+    list-style: none;
+    font-size: 1.1rem;
+    color: #333;
+    padding-left: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .credits-list li {
+    margin-bottom: 1rem;
+  }
+
+  footer {
+    background: #111;
+    color: #aaa;
+    text-align: center;
+    padding: 1rem 2rem;
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    header {
+      padding: 1rem 1rem;
+    }
+    nav {
+      gap: 1rem;
+    }
+    section {
+      margin: 1.5rem 1rem 3rem 1rem;
+    }
+    #home h2 {
+      font-size: 2rem;
+    }
+    .post-image {
+      height: 180px;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>AVID</h1>
+  <nav id="navbar">
+    <a href="#home" class="active">Home</a>
+    <a href="#teachers">Teachers</a>
+    <a href="#students">Student Experiences</a>
+    <a href="#programs">Programs</a>
+    <a href="#credits">Credits</a>
+  </nav>
+</header>
+
+<!-- HOME -->
+<section id="home">
+  <div class="content" role="banner">
+    <h2>Welcome to AVID</h2>
+    <p>Advancement Via Individual Determination: Empowering students to achieve college readiness and success through dedication, support, and opportunity.</p>
+  </div>
+</section>
+
+<!-- TEACHERS -->
+<section id="teachers" tabindex="-1">
+  <h2>Our Dedicated Teachers</h2>
+  <div class="teachers-list">
+    <article class="teacher-card">
+      <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80" alt="Ms. Emily Johnson" class="teacher-photo" />
+      <h3 class="teacher-name">Ms. Emily Johnson</h3>
+      <p class="teacher-subject">AVID Coordinator & Math Teacher</p>
+      <p class="teacher-bio">Emily has been guiding students for over 10 years, fostering critical thinking and confidence through AVID's innovative methods.</p>
+    </article>
+    <article class="teacher-card">
+      <img src="https://images.unsplash.com/photo-1529655683826-aba9b3e77383?auto=format&fit=crop&w=400&q=80" alt="Mr. Carlos Rodriguez" class="teacher-photo" />
+      <h3 class="teacher-name">Mr. Carlos Rodriguez</h3>
+      <p class="teacher-subject">English Teacher</p>
+      <p class="teacher-bio">Carlos empowers students to express themselves clearly and creatively, nurturing a love for literature and strong communication skills.</p>
+    </article>
+    <article class="teacher-card">
+      <img src="https://images.unsplash.com/photo-1552058544-f2b08422138a?auto=format&fit=crop&w=400&q=80" alt="Mrs. Sandra Lee" class="teacher-photo" />
+      <h3 class="teacher-name">Mrs. Sandra Lee</h3>
+      <p class="teacher-subject">College Prep Specialist</p>
+      <p class="teacher-bio">Sandra specializes in preparing students for college admissions with personalized plans and motivational support throughout high school.</p>
+    </article>
+  </div>
+</section>
+
+<!-- STUDENTS -->
+<section id="students" tabindex="-1">
+  <h2>Student Experiences</h2>
+  <div class="blog-list">
+    <article class="blog-post">
+      <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=800&q=80" alt="Student Jessica" class="post-image" />
+      <h3 class="post-title">Jessica's Journey</h3>
+      <p class="post-author">by Jessica M.</p>
+      <p class="post-text">AVID helped me develop the skills and confidence I needed to excel in school and prepare for college. The tutors and teachers always encouraged me to push myself and stay focused on my goals.</p>
+    </article>
+    <article class="blog-post">
+      <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80" alt="Student Mark" class="post-image" />
+      <h3 class="post-title">Mark's College Prep</h3>
+      <p class="post-author">by Mark L.</p>
+      <p class="post-text">Thanks to AVID, I learned how to take effective notes, manage my time wisely, and tackle tough assignments. This program truly made a difference in my academic life.</p>
+    </article>
+    <article class="blog-post">
+      <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80" alt="Student Amy" class="post-image" />
+      <h3 class="post-title">Amy's Success Story</h3>
+      <p class="post-author">by Amy P.</p>
+      <p class="post-text">Being part of AVID introduced me to a supportive community that helped me believe in myself. The skills I learned here are helping me every day, both in and out of school.</p>
+    </article>
+  </div>
+</section>
+
+<!-- PROGRAMS -->
+<section id="programs" tabindex="-1">
+  <h2>AVID Programs</h2>
+  <div class="programs-list">
+    <article class="program-card">
+      <h3 class="program-title">College Readiness Program</h3>
+      <p class="program-description">Focuses on preparing students with study skills, critical thinking, and college application support to ensure success.</p>
+    </article>
+    <article class="program-card">
+      <h3 class="program-title">Tutor Support Program</h3>
+      <p class="program-description">Provides ongoing tutoring sessions for students to receive additional academic assistance in challenging subjects.</p>
+    </article>
+    <article class="program-card">
+      <h3 class="program-title">Leadership Development</h3>
+      <p class="program-description">Encourages students to develop leadership skills through workshops, projects, and community involvement.</p>
+    </article>
+  </div>
+</section>
+
+<!-- CREDITS -->
+<section id="credits" tabindex="-1">
+  <h2>Credits</h2>
+  <ul class="credits-list">
+    <li>Website Design inspired by Tesla's sleek style.</li>
+    <li>Images provided by Unsplash (photos by various photographers).</li>
+    <li>Content inspired by AVID's official mission and programs.</li>
+    <li>Developed by Your Friendly Jayden Jones.</li>
+  </ul>
+</section>
+
+<footer>
+  &copy; 2024 AVID. All rights reserved.
+</footer>
+
+<script>
+  // Highlight current navigation link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a');
+
+  function activateNavLink() {
+    let scrollY = window.pageYOffset + 70; // offset for fixed header
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.offsetHeight;
+      const sectionId = section.getAttribute('id');
+      if(scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + sectionId) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }
+
+  window.addEventListener('scroll', activateNavLink);
+  window.addEventListener('load', activateNavLink);
+</script>
+</body>
+</html>
